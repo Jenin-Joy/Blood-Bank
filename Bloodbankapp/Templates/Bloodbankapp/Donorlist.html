@@ -1,0 +1,81 @@
+{% extends 'Bloodbankapp/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    tr, td {
+        border: 1px solid rgb(139, 139, 139);
+    }
+</style>    
+<div class="container mt-4">
+    <h2 class="text-center text-primary">Donor Data</h2>
+
+    <!-- Search Box -->
+    <div class="mb-3 text-center">
+        <input type="text" class="form-control search-box" name="txt_name" id="txt_name" placeholder="Search Donor by Name..." onkeyup="search()">
+    </div>
+
+    <!-- Donor Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>SI.no</th>
+                    <th>Name</th>
+                    <th>Email</th>            
+                    <th>Age</th>            
+                    <th>Contact</th>            
+                    <th>Address</th>            
+                    <th>District</th>            
+                    <th>Place</th>            
+                    <th>Blood Group</th>
+                    <th>Blood Unit</th>
+                    <th>Action</th>            
+                </tr>
+            </thead>
+            <tbody id="result">
+                {% for i in donor %}
+                
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.donor_name }}</td>
+                    <td>{{ i.donor_email }}</td>
+                    <td>{{ i.donor_age }}</td>
+                    <td>{{ i.donor_contact }}</td>
+                    <td>{{ i.donor_address }}</td>
+                    <td>{{ i.place.district.district_name }}</td>
+                    <td>{{ i.place.place_name }}</td>
+                    <td>{{ i.bloodgroup.Bloodgroup_name }}</td>
+                    
+                    <td>{{ i.tbl_blooddonate_set.last.blooddonate_date }}  {{ i.tbl_blooddonate_set.last.blooddonate_unit }}</td>
+                    
+
+                    <td>
+                        <a href="{% url 'Bloodbankapp:addDetails' i.id %}" class="btn btn-success btn-sm">Add Details</a>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- AJAX Search Script -->
+<script>
+    function search() {
+        var name = $("#txt_name").val();
+        var url = "{% url 'Bloodbankapp:ajaxsearch' %}";
+
+        $.ajax({
+            url: url,
+            data: { name: name },
+            success: function (data) {
+                $("#result").html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+</script>
+{% endblock %}

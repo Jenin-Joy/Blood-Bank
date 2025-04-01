@@ -1,0 +1,96 @@
+{% extends 'Administrator/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Custom CSS to enhance the dark theme */
+    .table-container {
+        background-color: #2a2c39; /* Matches bg-secondary */
+        border-radius: 8px;
+        padding: 20px;
+        color: #f8f9fa; /* Light text color */
+    }
+
+    .table-container h1 {
+        color: #f8f9fa;
+    }
+
+    .table-container table {
+        color: #f8f9fa;
+    }
+
+    .table-container th {
+        background-color: #1c1e29; /* Matches table-dark */
+    }
+
+    .table-container td {
+        background-color: #2a2c39;
+    }
+
+    .table-container .status-pending {
+        color: #ffc107; /* Warning color for Pending */
+        font-weight: 500;
+    }
+
+    .table-container .status-approved {
+        color: #28a745; /* Success color for Approved */
+        font-weight: 500;
+    }
+
+    .table-container .status-rejected {
+        color: #dc3545; /* Danger color for Rejected */
+        font-weight: 500;
+    }
+</style>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <!-- Table Section -->
+        <div class="col-12 col-md-10 mx-auto">
+            <div class="table-container">
+                <h1 class="text-center mb-4">My Request History Data</h1>
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>SI.No</th>
+                            <th>Unit</th>
+                            <th>For Date</th>
+                            <th>Blood Group</th>
+                            <th>District</th>
+                            <th>Place</th>
+                            <th>Request Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in bloodunit %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.request_quantitiy }}</td>
+                            <td>{{ i.request_fordate }}</td>
+                            <td>{{ i.bloodgroup.Bloodgroup_name }}</td>
+                            <td>{{ i.place.district.district_name }}</td>
+                            <td>{{ i.place.place_name }}</td>
+                            <td>{{ i.request_date }}</td>
+                            <td>
+                                {% if i.request_status == 0 %}
+                                    <span class="status-pending">Pending</span>
+                                {% elif i.request_status == 1 %}
+                                    <span class="status-approved">Approved</span>
+                                {% elif i.request_status == 2 %}
+                                    <span class="status-rejected">Rejected</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8">No request history available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}  

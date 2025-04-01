@@ -1,0 +1,36 @@
+{% extends 'Bloodbankapp/Header.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center text-primary">Add Donation Details</h1>
+
+    <form method="post" class="form-container">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <td><label for="txt_bloodgroup" class="form-label">Blood Group:</label></td>
+                        <td>
+                            <input type="text" name="txt_bloodgroup" id="txt_bloodgroup" value="{{ donor.bloodgroup.Bloodgroup_name }}" readonly class="form-control" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="txtunit" class="form-label">Blood Unit:</label></td>
+                        <td>
+                            <input type="text" name="txtunit" id="txtunit" value="" class="form-control" required />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <button type="submit" name="btnsubmit" class="btn btn-primary me-2">Submit</button>
+                            <button type="reset" name="btncancel" class="btn btn-secondary">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

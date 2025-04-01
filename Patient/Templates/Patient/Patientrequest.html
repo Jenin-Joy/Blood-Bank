@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Blood Request</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        .btn-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Patient Blood Request</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">For Date</label>
+                <input type="text" name="txtfordate" class="form-control" placeholder="Enter date">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Unit Blood</label>
+                <input type="text" name="txtunit" class="form-control" placeholder="Enter required units">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Blood Group</label>
+                <select name="selBloodgroup" class="form-select">
+                    <option value="">-- Select --</option>
+                    {% for i in blooddata %}
+                    <option value="{{i.id}}">{{i.Bloodgroup_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">District</label>
+                <select name="selDistrict" id="selDistrict" class="form-select">
+                    <option value="">-- Select --</option>
+                    {% for i in data %}
+                    <option value="{{i.id}}">{{i.district_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Place</label>
+                <select name="selPlace" id="selPlace" class="form-select">
+                    <option value="">-- Select --</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Location </label>
+                <input type="text" name="txtloc" class="form-control" placeholder="Enter required location">
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" name="btnsubmit" class="btn btn-primary">Submit</button>
+                <button type="reset" name="btncancel" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- jQuery & AJAX for Place Dropdown -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $("#selDistrict").change(function () {
+            var did = $(this).val();
+            var ur = "{% url 'Guest:ajaxplace' %}";
+            $.ajax({
+                url: ur,
+                data: { did: did },
+                success: function (data) {
+                    $("#selPlace").html(data);
+                },
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

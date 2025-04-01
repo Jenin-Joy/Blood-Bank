@@ -1,0 +1,73 @@
+{% extends 'Bloodbankapp/Header.html' %}
+
+{% load static %}
+
+{% block content %}
+<style>
+    tr, td {
+        border: 1px solid rgb(139, 139, 139);
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="text-center text-danger">Add Camp Details</h1>
+
+    <form method="post" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-table">
+                    <div class="form-row">
+                        <label for="txtdob" class="form-label">Date</label>
+                        <input type="date" name="txtdob" id="txtdob" class="form-control" value="{{ edit.patient_name|default:'' }}" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="txtdetails" class="form-label">Details</label>
+                        <input type="text" name="txtdetails" id="txtdetails" class="form-control" value="{{ edit.patient_email|default:'' }}" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="selDistrict" class="form-label">District</label>
+                        <select name="selDistrict" id="selDistrict" class="form-select" required>
+                            <option value="">-- Select --</option>
+                            {% for i in data %}
+                            <option value="{{ i.id }}">{{ i.district_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="selPlace" class="form-label">Place</label>
+                        <select name="selPlace" id="selPlace" class="form-select" required>
+                            <option value="">-- Select --</option>
+                        </select>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- AJAX Script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#selDistrict").change(function () {
+            var did = $(this).val();
+            var url = "{% url 'Bloodbankapp:ajaxplace' %}";
+            $.ajax({
+                url: url,
+                data: { did: did },
+                success: function (data) {
+                    $("#selPlace").html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

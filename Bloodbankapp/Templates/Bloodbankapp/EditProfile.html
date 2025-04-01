@@ -1,0 +1,143 @@
+{% extends 'Bloodbankapp/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Ensure the entire content block has a dark background */
+    .content {
+        background-color: #2a2c39; /* Matches Header.html dark theme */
+        min-height: 100vh; /* Full viewport height */
+        color: #f8f9fa; /* Light text color */
+    }
+
+    .edit-profile-container {
+        background-color: #2a2c39; /* Consistent with content background */
+        border-radius: 8px;
+        padding: 20px;
+        color: #f8f9fa;
+        margin-bottom: 20px;
+        border: 1px solid #495057; /* Optional border for definition */
+    }
+
+    .edit-profile-container h3 {
+        color: #f8f9fa;
+        margin-bottom: 20px;
+        background-color: #dc3545; /* Red header background to match screenshot */
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .edit-profile-container table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #2a2c39; /* Ensure table background matches container */
+    }
+
+    .edit-profile-container th, .edit-profile-container td {
+        padding: 10px;
+        border: 1px solid #495057;
+    }
+
+    .edit-profile-container th {
+        background-color: #1c1e29; /* Darker header for contrast */
+        text-align: right;
+        width: 30%;
+        color: #f8f9fa;
+    }
+
+    .edit-profile-container td {
+        background-color: #2a2c39; /* Match container background */
+    }
+
+    .edit-profile-container .form-control {
+        background-color: #1c1e29; /* Dark input background */
+        color: #f8f9fa;
+        border: 1px solid #495057;
+        width: 100%;
+        height: 40px; /* Consistent height */
+    }
+
+    .edit-profile-container .form-control:focus {
+        background-color: #1c1e29;
+        color: #f8f9fa;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .edit-profile-container select.form-control {
+        height: auto; /* Adjust for dropdown */
+        padding: 5px;
+    }
+
+    .edit-profile-container .btn-success {
+        background-color: #28a745;
+        border: none;
+        padding: 10px 20px;
+    }
+
+    .edit-profile-container .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .messages .alert {
+        color: #f8f9fa;
+        background-color: #2a2c39;
+        border-color: #495057;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12 col-md-6 mx-auto">
+            <div class="edit-profile-container">
+                <h3>Edit Blood Bank Profile</h3>
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <th><label for="txtname">Name</label></th>
+                            <td><input type="text" class="form-control" id="txtname" name="txtname" value="{{ data.bloodbank_name }}" required></td>
+                        </tr>
+                        <tr>
+                            <th><label for="txtemail">Email</label></th>
+                            <td><input type="email" class="form-control" id="txtemail" name="txtemail" value="{{ data.bloodbank_email }}" required></td>
+                        </tr>
+                        <tr>
+                            <th><label for="txtphone">Contact Number</label></th>
+                            <td><input type="text" class="form-control" id="txtphone" name="txtphone" value="{{ data.bloodbank_contact }}" required></td>
+                        </tr>
+                        <tr>
+                            <th><label for="txtaddr">Address</label></th>
+                            <td><textarea class="form-control" id="txtaddr" name="txtaddr" required>{{ data.bloodbank_address }}</textarea></td>
+                        </tr>
+                        <tr>
+                            <th><label for="txtdist">District</label></th>
+                            <td>
+                                <select class="form-control" id="txtdist" name="txtdist" required>
+                                    {% for district in districts %}
+                                    <option value="{{ district.id }}" {% if district.id == data.district.id %}selected{% endif %}>
+                                        {{ district.district_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

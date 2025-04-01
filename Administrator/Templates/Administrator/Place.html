@@ -1,0 +1,154 @@
+{% extends 'Administrator/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Custom CSS to enhance the dark theme */
+    .form-container, .table-container {
+        background-color: #2a2c39; /* Matches bg-secondary */
+        border-radius: 8px;
+        padding: 20px;
+        color: #f8f9fa; /* Light text color */
+    }
+
+    .form-container label {
+        font-weight: 500;
+    }
+
+    .form-container select,
+    .form-container input[type="text"],
+    .form-container input[type="submit"],
+    .form-container input[type="reset"] {
+        background-color: #1c1e29; /* Matches bg-dark */
+        color: #f8f9fa;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .form-container select option {
+        background-color: #1c1e29;
+        color: #f8f9fa;
+    }
+
+    .form-container input[type="submit"] {
+        background-color: #007bff; /* Primary button color */
+        transition: background-color 0.3s;
+    }
+
+    .form-container input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .form-container input[type="reset"] {
+        background-color: #6c757d; /* Secondary button color */
+        transition: background-color 0.3s;
+    }
+
+    .form-container input[type="reset"]:hover {
+        background-color: #5a6268;
+    }
+
+    .table-container table {
+        color: #f8f9fa;
+    }
+
+    .table-container th {
+        background-color: #1c1e29; /* Matches table-dark */
+    }
+
+    .table-container td {
+        background-color: #2a2c39;
+    }
+
+    .table-container a {
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+    .table-container a[href*="delplace"] {
+        background-color: #dc3545; /* Danger button color */
+        color: white;
+    }
+
+    .table-container a[href*="delplace"]:hover {
+        background-color: #c82333;
+    }
+
+    .table-container a[href*="editplace"] {
+        background-color: #ffc107; /* Warning button color */
+        color: black;
+    }
+
+    .table-container a[href*="editplace"]:hover {
+        background-color: #e0a800;
+    }
+</style>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <!-- Form Section -->
+        <div class="col-12 col-md-6 mx-auto">
+            <div class="form-container">
+                <h3 class="text-center mb-4">Manage Places</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">District</label>
+                        <select name="selDistrict" class="form-control" required>
+                            <option value="">--select--</option>
+                            {% for i in districtData %}
+                            <option 
+                                {% if edit.district_id == i.id %}selected{% endif %}
+                                value="{{ i.id }}">{{ i.district_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Place</label>
+                        <input type="text" name="txtplace" class="form-control" value="{{ edit.place_name }}" required>
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" name="btnsubmit" value="Submit" class="px-4 py-2">
+                        <input type="reset" name="btncancel" value="Cancel" class="px-4 py-2 ms-2">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="col-12 col-md-8 mx-auto">
+            <div class="table-container">
+                <h4 class="text-center mb-3">Place List</h4>
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>SIN</th>
+                            <th>District</th>
+                            <th>Place</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in placeData %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.district.district_name }}</td>
+                            <td>{{ i.place_name }}</td>
+                            <td>
+                                <a href="{% url 'Administrator:delplace' i.id %}" onclick="return confirm('Are you sure you want to delete this place?')">Delete</a>
+                                <a href="{% url 'Administrator:editplace' i.id %}">Edit</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">No places available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

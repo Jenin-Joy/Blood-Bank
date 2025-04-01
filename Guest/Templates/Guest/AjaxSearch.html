@@ -1,0 +1,26 @@
+{% if donor %}
+
+    
+    {% for i in donor %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+
+
+        <td>{{i.donor.place.district.district_name}}</td>
+
+
+
+        <td>{{i.donor.bloodgroup.Bloodgroup_name}}</td>  
+        <td>{{i.blooddonate_unit}}</td>      
+        
+        <div>
+            <a href="{% url 'Guest:donorInsert' %}">Create an account</a>
+        </div>
+    </tr>
+    {% endfor %}
+    
+
+    {% else  %}
+    No Data  Found
+    {% endif %}   
+

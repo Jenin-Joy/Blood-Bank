@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Patient</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative; /* Added for positioning logout button */
+        }
+        .profile-img {
+            width: 80px;
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .btn-custom {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            font-size: 14px;
+            background-color: #dc3545; /* Bootstrap danger color */
+            border: none;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .logout-btn:hover {
+            background-color: #c82333; /* Darker shade on hover */
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="profile-container">
+            {% csrf_token %} 
+
+            <!-- Logout Button -->
+            <a href="{% url 'Patient:logout' %}" class="logout-btn">Logout</a>
+
+            <img src="{{data.patient_photo.url}}" class="profile-img" alt="Profile Picture">
+            
+            <table class="table table-borderless">
+                <tr>
+                    <td><strong>Name:</strong></td>
+                    <td>{{data.patient_name}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>{{data.patient_email}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Contact Number:</strong></td>
+                    <td>{{data.patient_contact}}</td>
+                </tr>
+            </table>
+
+            <a href="{% url 'Patient:editprofile' %}" class="btn btn-primary btn-custom">Edit Profile</a>
+            <a href="{% url 'Patient:changepassword' %}" class="btn btn-warning btn-custom">Change Password</a>
+            <a href="{% url 'Patient:patient_request' %}" class="btn btn-success btn-custom">Request Blood</a>
+            <a href="{% url 'Patient:myRequestHistory' %}" class="btn btn-info btn-custom">Request History</a>
+            <a href="{% url 'Patient:complaintnew' %}" class="btn btn-info btn-custom">Send a Complaint</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

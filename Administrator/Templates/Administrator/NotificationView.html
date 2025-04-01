@@ -1,0 +1,104 @@
+{% extends 'Administrator/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Custom CSS to enhance the dark theme */
+    .table-container {
+        background-color: #2a2c39; /* Matches bg-secondary */
+        border-radius: 8px;
+        padding: 20px;
+        color: #f8f9fa; /* Light text color */
+    }
+
+    .table-container h1 {
+        color: #f8f9fa;
+    }
+
+    .table-container table {
+        color: #f8f9fa;
+    }
+
+    .table-container th {
+        background-color: #1c1e29; /* Matches table-dark */
+    }
+
+    .table-container td {
+        background-color: #2a2c39;
+    }
+
+    .table-container a {
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        margin: 0 5px;
+    }
+
+    .table-container a[href*="approve"] {
+        background-color: #28a745; /* Success button color */
+        color: white;
+    }
+
+    .table-container a[href*="approve"]:hover {
+        background-color: #218838;
+    }
+
+    .table-container a[href*="reject"] {
+        background-color: #dc3545; /* Danger button color */
+        color: white;
+    }
+
+    .table-container a[href*="reject"]:hover {
+        background-color: #c82333;
+    }
+</style>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <!-- Table Section -->
+        <div class="col-12 col-md-12 mx-auto">
+            <div class="table-container">
+                <h1 class="text-center mb-4">Notification </h1>
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>SI.No</th>
+                            <th>Date</th>
+                            
+                            <th>Content</th>
+                            
+                            
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+
+                            <td>{{ i.notification_date }}</td>
+                            <td>{{ i.notification_content }}</td>
+                            
+                                
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="10">No Notification .</td>
+                        </tr>
+                        
+                        
+                        {% endfor %}
+                        <tr>
+                            <a href="{% url 'Administrator:notificationInsertSelect' %}" class="btn btn-sm btn-success me-2">
+                                <i class="fas fa-plus"></i> Send a new Notification
+                            </a>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

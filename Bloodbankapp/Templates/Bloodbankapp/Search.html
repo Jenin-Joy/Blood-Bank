@@ -1,0 +1,70 @@
+{% extends 'Bloodbankapp/Header.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    tr, td {
+        border: 1px solid rgb(139, 139, 139);
+    }
+</style>   
+<div class="container mt-4">
+    <h1 class="text-center text-danger">Search Blood</h1>
+
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="txt_name" id="txt_name" placeholder=" 🔍Search Blood Group..." onkeyup="search()">
+                    <button type="submit" class="btn btn-danger" style="display: none;"></button> <!-- Hidden submit button for POST -->
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center" id="result">
+            <thead class="table-dark">
+                <tr>
+                    <th>SI.no</th>
+                    <th>District</th>
+                    <th>Blood Group</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in donor %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.donor.place.district.district_name }}</td>
+                    <td>{{ i.donor.bloodgroup.Bloodgroup_name }}</td>
+                    <td>{{ i.blooddonate_unit }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    
+</div>
+
+<!-- JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function search() {
+        var name = document.getElementById("txt_name").value;
+        var ur = "{% url 'Bloodbankapp:ajaxsearchlist' %}";
+        $.ajax({
+            url: ur,
+            data: { name: name },
+            success: function (data) {
+                $("#result tbody").html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+</script>
+{% endblock %}

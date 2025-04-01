@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComplaintType</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %} 
+        <table align="center" border="5">
+            <tr>
+                <td>ComplaintType</td>
+                <td><input type="text" name="txtname" value="{{edit.complainttype_name}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="btnsubmit" value="Submit">
+                    <input type="reset" name="btncancel" value="Cancel">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+<table align="center">
+    <tr>
+        <th>SINn:</th>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+    {% for i in ComplaintTypedata %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.complainttype_name}}</td>
+        <td>
+            <a href="{% url 'Administrator:delcomplainttype' i.id %}">Delete</a>
+            <a href="{% url 'Administrator:editcomplainttype' i.id %}">Edit</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+</html>

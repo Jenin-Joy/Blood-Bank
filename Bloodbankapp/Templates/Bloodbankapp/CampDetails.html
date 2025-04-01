@@ -1,0 +1,55 @@
+{% extends 'Bloodbankapp/Header.html' %}
+
+{% load static %}
+
+{% block content %}
+<style>
+    tr, td {
+        border: 1px solid rgb(139, 139, 139);
+    }
+</style>
+<div class="container mt-4">
+    <h1 class="text-center text-primary">Camp Details</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>SI.no</th>
+                        <th>Date</th>
+                        <th>Details</th>
+                        <th>District</th>
+                        <th>Place</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.camp_date }}</td>
+                        <td>{{ i.camp_details }}</td>
+                        <td>{{ i.place.district.district_name }}</td>
+                        <td>{{ i.place.place_name }}</td>
+                        <td>
+                            {% if i.camp_status == 0 %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                            {% elif i.camp_status == 1 %}
+                            <span class="badge bg-success">Approved</span>
+                            {% elif i.camp_status == 2 %}
+                            <span class="badge bg-danger">Rejected</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-3">
+            <a href="{% url 'Bloodbankapp:campInsertSelect' %}" class="btn btn-primary">Add Camp</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

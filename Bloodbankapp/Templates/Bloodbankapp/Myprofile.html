@@ -1,0 +1,53 @@
+{% extends 'Bloodbankapp/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    tr, td {
+        border: 1px solid rgb(139, 139, 139);
+    }
+</style>    
+<!-- Add this block to display messages -->
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+<!-- Rest of your Myprofile.html content -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12 col-md-6 mx-auto">
+            <div class="profile-container">
+                <h3>My Profile</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ data.bloodbank_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ data.bloodbank_email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Contact Number</th>
+                        <td>{{ data.bloodbank_contact }}</td>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <td>{{ data.bloodbank_address }}</td>
+                    </tr>
+                    <tr>
+                        <th>District</th>
+                        <td>{{ data.district.district_name }}</td>
+                    </tr>
+                </table>
+                <div class="text-center">
+                    <a href="{% url 'Bloodbankapp:editprofile' %}" class="btn btn-warning">Edit Profile</a>
+                    <a href="{% url 'Bloodbankapp:changepassword' %}" class="btn btn-danger">Change Password</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

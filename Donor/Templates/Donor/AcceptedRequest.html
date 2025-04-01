@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        tr, td {
+            border: 1px solid rgb(139, 139, 139);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center text-primary">Accepted Blood Request</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>SI.no</th>
+                            <th>Name</th>
+                            <th>Unit</th>
+                            <th>Contact</th>
+                            <th>For Date</th>
+                            <th>Blood Group</th>
+                            <th>District</th>
+                            <th>Place</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if request %}
+                            {% for request in request %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ request.patient.patient_name }}</td>
+                                    <td>{{ request.request_quantitiy }}</td>
+                                    <td>{{ request.patient.patient_contact }}</td>
+                                    <td>{{ request.request_fordate }}</td>
+                                    <td>{{ request.bloodgroup.Bloodgroup_name }}</td>
+                                    <td>{{ request.place.district.district_name }}</td>
+                                    <td>{{ request.place.place_name }}</td>
+                                    <td>{{ request.request_location }}</td>
+                                    <td>{{ request.request_date }}</td>
+                                    <td>
+                                        Request Accepted by you
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="11" class="text-center text-danger">No request accepted.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                    
+                </table>
+            </div>
+        </form>  
+    </div>
+</body>
+</html>

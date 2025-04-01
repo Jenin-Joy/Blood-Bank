@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DonorRegistration</title>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <table align="center" border="5">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txtname" value="{{edit.donor_name}}"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="txtemail" value="{{edit.donor_email}}"></td>
+            </tr>
+            <tr>
+                <td>Age </td>
+                <td><input type="text" name="txtage" ></td>
+
+            </tr>
+
+
+            <tr>
+                <td>Conatct Number</td>
+                <td><input type="text" name="txtphone" ></td>
+
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><input type="text" name="txtaddr" ></td>
+
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="filePhoto"></td>
+           </tr>
+            <tr>
+                <td>District</td>
+                <td>
+                    <select name="selDistrict" id="selDistrict">
+                        <option value="">--select--</option>
+                        {% for i in data %}
+                        <option value="{{i.id}}">{{i.district_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td><select name="selPlace" id="selPlace">
+                    <option value="">--select--</option>
+                    
+                </select></td>
+            </tr>
+            <tr>
+                <td>bloodgroup</td>
+                <td><select name="selBloodgroup">
+                    <option value="">--select--</option>
+                    {% for i in blooddata %}
+                    <option value="{{i.id}}">{{i.Bloodgroup_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>disease</td>
+                <td><input type="text" name="txtdise"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="txtpwd"></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="btnsubmit" value="Submit">
+                    <input type="reset" name="btncancel" value="Cancel">
+                </td>
+            </tr>
+        </table>
+
+    </form>
+    
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#selDistrict").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#selPlace").html(data);
+            },
+        });
+    });
+</script>

@@ -1,0 +1,90 @@
+{% extends 'Administrator/Header.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <!-- Form Section -->
+        <div class="col-12 col-md-6 mx-auto">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h3 class="text-center mb-4 text-light"> Add Blood Bank </h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label text-light">Name</label>
+                        <input type="text" class="form-control bg-dark text-light border-0" name="txtname" value="{{ edit.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Email</label>
+                        <input type="email" class="form-control bg-dark text-light border-0" name="txtemail" value="{{ edit.email }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Contact Number</label>
+                        <input type="text" class="form-control bg-dark text-light border-0" name="txtphone" value="{{ edit.contact }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Address</label>
+                        <input type="text" class="form-control bg-dark text-light border-0" name="txtaddress" value="{{ edit.address }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">District</label>
+                        <!-- <input type="text" class="form-control bg-dark text-light border-0" name="txtdist" value="{{ edit.district_name }}" required> -->
+                        <select name="selDistrict" class="form-control bg-dark text-light border-0" required>
+                            <option value="">--select--</option>
+                            {% for i in districtData %}
+                            <option 
+                                {% if edit.district_id == i.id %}selected{% endif %}
+                                value="{{ i.id }}">{{ i.district_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Password</label>
+                        <input type="password" class="form-control bg-dark text-light border-0" name="txtpwd" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="col-12 col-md-8 mx-auto">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h4 class="text-center mb-3 text-light">Blood Bank List</h4>
+                <table class="table table-bordered table-striped text-center text-light">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>SIN</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in bloodbankdata %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.bloodbank_name }}</td>
+                            <td>{{ i.bloodbank_email }}</td>
+                            <td>{{ i.bloodbank_contact }}</td>
+                            <td>
+                                <a href="{% url 'Administrator:delBloodbank' i.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="{% url 'Administrator:editBloodbank' i.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No blood banks available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

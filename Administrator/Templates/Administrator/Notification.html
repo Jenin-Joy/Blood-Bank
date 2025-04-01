@@ -1,0 +1,126 @@
+{% extends 'Administrator/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .form-container {
+        background: #1c1e29; /* Darker background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        max-width: 600px;
+        margin: auto;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #dc3545; /* Red color for heading */
+    }
+
+    textarea {
+        background-color: #343a40 !important; /* Dark background */
+        color: #ffffff !important; /* Light text */
+        border: 1px solid #dc3545; /* Red border */
+        border-radius: 5px;
+        padding: 10px;
+        resize: none;
+    }
+
+    textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d !important;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268 !important;
+    }
+
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #2a2c39;
+        color: #ffffff;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 2px solid #ffffff; /* White border for visibility */
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #dc3545; /* Red header */
+    }
+
+    tbody tr:hover {
+        background-color: #383c4a;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="text-center text-danger">Send a New Notification</h1>
+
+    <div class="form-wrapper">
+        <form method="post" class="form-container p-4">
+            {% csrf_token %}
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="txtcon" class="form-label text-light">Content:</label>
+                        <textarea name="txtcon" id="txtcon" rows="4" class="form-control bg-dark text-light" placeholder="Enter notification..." required></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" name="btnsubmit" class="btn btn-danger me-2">Submit</button>
+                        <button type="reset" name="btncancel" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Notification Table -->
+    <div class="mt-4">
+        <h2 class="text-center text-light">Notification History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>SI.No</th>
+                    <th>Date</th>
+                    <th>Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.notification_date }}</td>
+                    <td>{{ i.notification_content }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No Notifications Found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

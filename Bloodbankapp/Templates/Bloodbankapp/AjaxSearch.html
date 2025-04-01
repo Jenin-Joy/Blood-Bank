@@ -1,0 +1,40 @@
+<table border="1" align="center">
+    <tr>
+        <th>SI.no:</th>
+        <th>Name</th>
+        <th>Email</th>            
+        <th>Age</th>            
+        <th>Contact</th>            
+        <th>Address</th>            
+        <th>District</th>            
+        <th>Place</th>            
+        <th>Bloodgroup</th>            
+        <th>Action</th>            
+    </tr>
+
+    {% if donor %}
+        {% for i in donor %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.donor_name }}</td>
+            <td>{{ i.donor_email }}</td>
+            <td>{{ i.donor_age }}</td>
+            <td>{{ i.donor_contact }}</td>
+            <td>{{ i.donor_address }}</td>
+            <td>{{ i.place.district.district_name }}</td>
+            <td>{{ i.place.place_name }}</td>
+            <td>{{ i.bloodgroup.Bloodgroup_name }}</td>      
+            <td><a href="{% url 'Bloodbankapp:addDetails' i.id %}">Add Details</a></td>      
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="10" align="center">No Data Found</td>
+        </tr>
+        <tr>
+            <td colspan="10" align="center">
+                <a href="{% url 'Bloodbankapp:donorInsert' %}">Register As New Donor</a>
+            </td>
+        </tr>
+    {% endif %}
+</table>

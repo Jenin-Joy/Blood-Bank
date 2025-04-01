@@ -1,0 +1,71 @@
+{% extends 'Bloodbankapp/Header.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    tr, td {
+        border: 1px solid rgb(139, 139, 139);
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="text-center text-primary">Patient Blood Request</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>SI.no</th>
+                        <th>Name</th>
+                        <th>Unit</th>
+                        <th>Contact</th>
+                        <th>For Date</th>
+                        <th>Blood Group</th>
+                        <th>District</th>
+                        <th>Place</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in bloodunit %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.patient.patient_name }}</td>
+                        <td>{{ i.request_quantitiy }}</td>
+                        <td>{{ i.patient.patient_contact}}</td>
+                        <td>{{ i.request_fordate }}</td>
+                        <td>{{ i.bloodgroup.Bloodgroup_name }}</td>
+                        <td>{{ i.place.district.district_name }}</td>
+                        <td>{{ i.place.place_name }}</td>
+                        <td>{{ i.request_location}}</td>
+                        <td>{{ i.request_date }}</td>
+                        <td width="200">
+                            {% if i.request_status == 0 %}
+                            {% if i.bloodcount < i.unit %}
+                            Not Enough Blood |<a href="{% url 'Bloodbankapp:req' i.id %}" class="btn btn-sm btn-warning">Request Blood </a>
+                            {% else %}
+                            <a href="{% url 'Bloodbankapp:approve' i.id %}" class="btn btn-sm btn-success me-2">Approve</a>
+                            <a href="{% url 'Bloodbankapp:reject' i.id %}" class="btn btn-sm btn-danger">Reject</a>
+                            <a href="{% url 'Bloodbankapp:req' i.id %}" class="btn btn-sm btn-warning">Request Blood </a>
+                            {% endif %}
+                            {% elif i.request_status == 1 %}
+                            <span class="badge bg-success">Approved</span>
+                            {% elif i.request_status == 2 %}
+                            <span class="badge bg-danger">Reject</span>
+                            {% elif i.request_status == 3 %}
+                            <span class="badge bg-warning">Requested Blood </span>
+                            {% elif i.request_status == 4 %}
+                            <span style="color: white;">Donor {{i.donor.donor_name}} accepted your request</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+{% endblock %}
